@@ -14,9 +14,9 @@ function wd_remove_accents($str, $charset='utf-8')
 
 define("DBTYPE", "MySQL"); 
 define("HOST", "localhost"); 
-define("USER","root"); 
-define("PASS", ""); 
-define("BASE", "MINIprojetBDD");
+define("USER", "root"); 
+define("PASS", "root"); 
+define("BASE", "ProjetWeb");
 
 $link = mysqli_connect(HOST,USER,PASS,BASE);
 	if(!$link){
