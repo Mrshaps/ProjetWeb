@@ -12,8 +12,6 @@
   <meta charset="utf8_unicode_ci">
 </head>
 <body>
-<div id="grid">
-</div> <!--- fin div grid -->
 <div id="page">
   <div id="header"> 
     <nav id="nav-1">
