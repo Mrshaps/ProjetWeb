@@ -60,10 +60,22 @@ function checkAll(field) {
 
 var cmptLigne;
 
+function CalculSomme(){
+
+}
+
 function CalculMontant (Quantite, ligne) {
   
   var prix = parseFloat(document.getElementById('prixU'+ligne).innerHTML).toFixed(2);
-  m = document.getElementById('montant'+ligne).innerHTML = prix * Quantite;
+  m = document.getElementById('montant'+ligne);
+  m.innerHTML = "";
+  p = document.createElement('P');
+  prix = document.createTextNode(prix * Quantite);
+  e = document.createTextNode(' \u20AC');
+  m.appendChild(prix);
+  m.appendChild(e);
+
+
 }
 
 function InfoLigne(service, ligne) {
@@ -92,6 +104,11 @@ function InfoLigne(service, ligne) {
   xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
   xhr.send("codeServices="+service);
 
+}
+
+function SupprimerLigne() {
+  var table = document.getElementById('tbodyId');
+  table.deleteRow();
 }
 
 function AjoutLigne() {
@@ -125,8 +142,8 @@ function AjoutLigne() {
             }
       var td3 = row.insertCell(); var ttd3 = document.createTextNode('0 \u20AC'); td3.appendChild(ttd3); td3.setAttribute('style','display: inline-flex;'); td3.setAttribute('id','prix'+cmptLigne);
       var td4 = row.insertCell(); var ttd4 = document.createElement('INPUT'); td4.appendChild(ttd4); ttd4.setAttribute('name',cmptLigne);
-      ttd4.setAttribute('type','text'); ttd4.setAttribute('value','0'); ttd4.setAttribute('onkeyup','CalculMontant(this.value,this.name)');
-      var td5 = row.insertCell(); var ttd5 = document.createTextNode('0 \u20AC'); td5.appendChild(ttd5); td5.setAttribute('id','montant'+cmptLigne);
+      ttd4.setAttribute('type','text'); ttd4.setAttribute('placeholder','0'); ttd4.setAttribute('onkeyup','CalculMontant(this.value,this.name)');
+      var td5 = row.insertCell(); var ttd5 = document.createTextNode('0 \u20AC'); td5.appendChild(ttd5); td5.setAttribute('id','montant'+cmptLigne); td5.setAttribute('style','display: inline-flex;');
       cmptLigne++;
 
     }
