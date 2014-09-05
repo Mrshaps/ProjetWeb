@@ -1,8 +1,3 @@
-function writeInDiv(text,element){
-    var objet = document.getElementById(element);
-    objet.innerHTML = text;
-}
-
 function getXhr(){
  var xhr = null; 
  if(window.XMLHttpRequest) // Firefox et autres
@@ -63,23 +58,174 @@ function checkAll(field) {
 } 
 
 
-/*----------------Modifier-----------------*/
+var cmptLigne;
 
-function modifierEtu(ID,jnom,jprenom,jage,jsexe,jnoIut)
+function CalculMontant (Quantite, ligne) {
+  
+  var prix = parseFloat(document.getElementById('prixU'+ligne).innerHTML).toFixed(2);
+  m = document.getElementById('montant'+ligne).innerHTML = prix * Quantite;
+}
+
+function InfoLigne(service, ligne) {
+  //alert(ligne);
+  var xhr = getXhr();
+  xhr.onreadystatechange = function(){
+    if(xhr.readyState == 4 && xhr.status == 200){
+      // document.getElementById('error').innerHTML = xhr.responseText;
+      i = xhr.responseText.split('@');
+      document.getElementById('cPrestation'+ligne).innerHTML = i[1];
+      prixT = document.getElementById('prix'+ligne);
+
+      p1 = document.createElement('P');
+      p2 = document.createElement('P');
+      prix = document.createTextNode(i[3]);
+      e = document.createTextNode(' \u20AC');
+      p1.appendChild(prix);
+      p1.setAttribute('id','prixU'+ligne);
+      p2.appendChild(e);
+      prixT.innerHTML = "";
+      prixT.appendChild(p1);
+      prixT.appendChild(p2);
+    }
+  }
+  xhr.open("POST","script.php?action=InfoLigne",true);
+  xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+  xhr.send("codeServices="+service);
+
+}
+
+function AjoutLigne() {
+
+  var xhr = getXhr();
+  xhr.onreadystatechange = function(){
+    if(xhr.readyState == 4 && xhr.status == 200){
+      // document.getElementById('error').innerHTML = xhr.responseText;
+      var i1=xhr.responseText.split('#');
+
+      var table = document.getElementById('tbodyId');
+      //alert(table);
+      var row = table.insertRow(); 
+      var td1 = row.insertCell(); td1.setAttribute('id','cPrestation'+cmptLigne);
+      var td2 = row.insertCell(); var ttd2 = document.createElement('SELECT'); td2.appendChild(ttd2);
+            ttd2.setAttribute('id','listeServices');
+            ttd2.setAttribute('name',cmptLigne);
+            ttd2.setAttribute('onchange','InfoLigne(this.value,this.name)');
+            var value = 0;
+              var nom = "Vide";
+              var option = document.createElement('option'); option.setAttribute("value",value);
+              var title = document.createTextNode(nom); option.appendChild(title); ttd2.appendChild(option);
+            var cmpt = 1;
+            while (i1[cmpt]) {
+              var i2 = i1[cmpt].split('@');
+              var value = i2[0];
+              var nom = i2[1];
+              var option = document.createElement('option'); option.setAttribute("value",value);
+              var title = document.createTextNode(nom); option.appendChild(title); ttd2.appendChild(option);
+              cmpt++;
+            }
+      var td3 = row.insertCell(); var ttd3 = document.createTextNode('0 \u20AC'); td3.appendChild(ttd3); td3.setAttribute('style','display: inline-flex;'); td3.setAttribute('id','prix'+cmptLigne);
+      var td4 = row.insertCell(); var ttd4 = document.createElement('INPUT'); td4.appendChild(ttd4); ttd4.setAttribute('name',cmptLigne);
+      ttd4.setAttribute('type','text'); ttd4.setAttribute('value','0'); ttd4.setAttribute('onkeyup','CalculMontant(this.value,this.name)');
+      var td5 = row.insertCell(); var ttd5 = document.createTextNode('0 \u20AC'); td5.appendChild(ttd5); td5.setAttribute('id','montant'+cmptLigne);
+      cmptLigne++;
+
+    }
+  }
+  xhr.open("POST","script.php?action=newLigne",true);
+  xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+  xhr.send();
+  
+}
+
+function infoClient()
 {	
+	var codeClients	= document.getElementById('inputIdClient').value;
 	var xhr = getXhr();
 	xhr.onreadystatechange = function(){
 	if(xhr.readyState == 4 && xhr.status == 200){
-	  	// document.getElementById(info).innerHTML = xhr.responseText;
-	  	alert(xhr.responseText);
+	  	// ----info client----
+      document.getElementById('info').innerHTML = "";
+      //document.getElementById('error').innerHTML = xhr.responseText;
+      var i = xhr.responseText.split(",");
+
+      var p = document.createElement('P');
+      var t1 = document.createTextNode(i[0]+" "+i[1]+" "+i[2]);
+      var t2 = document.createTextNode(i[3]);
+      var t3 = document.createTextNode(i[4]+" "+i[5]);
+      
+      p.appendChild(t1);
+      p.appendChild(document.createElement('br'));
+      p.appendChild(t2);
+      p.appendChild(document.createElement('br'));
+      p.appendChild(t3);
+      document.getElementById('info').appendChild(p);
+
+      document.getElementById('tableau').style.visibility="visible";
+      document.getElementById('tdCarte').innerHTML="Votre carte est "+i[6]+".";
+      document.getElementById('tdRemise').innerHTML=i[7]+" %";
+      cmptLigne = 0;
+
+
+      // // ---- Tableau ----
+      // var divTableau = document.createElement('DIV');
+      // var btnNewLine = document.createElement("INPUT");
+      // btnNewLine.setAttribute("type", "button");
+      // btnNewLine.setAttribute('value', 'Ajouter une ligne');
+      // btnNewLine.setAttribute('onclick', 'AjoutLigne()');
+
+      // // ---- bouton ----
+      // var btnSuprLine = document.createElement("INPUT");
+      // btnSuprLine.setAttribute("type", "button");
+      // btnSuprLine.setAttribute('value', 'Supprimer une ligne');
+      // //btnSuprLine.setAttribute('onclick', '');
+
+      // divTableau.appendChild(btnNewLine);
+      // divTableau.appendChild(btnSuprLine);
+      // document.getElementById('info').appendChild(divTableau);
+      
+      // //----table----
+      // var table = document.createElement('TABLE');
+      // table.setAttribute('id','table');
+
+      // //----tbody----
+      // var row = table.insertRow();
+      // var tbody = document.getElementsByTagName('tbody');
+      // //tbody.setAttribute('id','tbodyId');
+
+
+      // //----thead----
+      // var thead = table.createTHead();
+      // var tr = thead.insertRow();
+      // var th1 = tr.insertCell(); var tth1 = document.createTextNode("Code prestation"); th1.appendChild(tth1);
+      // var th2 = tr.insertCell(); var tth2 = document.createTextNode("Designation");     th2.appendChild(tth2);
+      // var th3 = tr.insertCell(); var tth3 = document.createTextNode("Prix");            th3.appendChild(tth3);
+      // var th4 = tr.insertCell(); var tth4 = document.createTextNode("Quantite");        th4.appendChild(tth4);
+      // var th5 = tr.insertCell(); var tth5 = document.createTextNode("Montant");         th5.appendChild(tth5);
+      // document.getElementById('info').appendChild(table);
+      // //AjoutLigne()
+      // //----tFoot----
+      // var tfoot = table.createTFoot();
+      // var rf1 = tfoot.insertRow();
+      // var rf2 = tfoot.insertRow();
+      // var rf3 = tfoot.insertRow();
+
+      // var rf1Cell0 = rf1.insertCell(); var trf1Cell0 = document.createTextNode("Votre carte est "+i[6]+"."); rf1Cell0.appendChild(trf1Cell0); 
+      // rf1Cell0.setAttribute('colspan','3'); rf1Cell0.setAttribute('rowspan','3');
+      // var rf1Cell1 = rf1.insertCell(); var rf1Cell2 = rf1.insertCell(); var trf1Cell1 = document.createTextNode("Somme");    rf1Cell1.appendChild(trf1Cell1);
+      // var rf2Cell1 = rf2.insertCell(); var rf1Cell2 = rf2.insertCell(); var trf2Cell1 = document.createTextNode("Remise");    rf2Cell1.appendChild(trf2Cell1);
+      // var rf3Cell1 = rf3.insertCell(); var rf1Cell2 = rf3.insertCell(); var trf3Cell1 = document.createTextNode("A regler");  rf3Cell1.appendChild(trf3Cell1);
+
+      
 	  }
 	}
-	xhr.open("POST","script.php",true);
+	xhr.open("POST","script.php?action=infoClient",true);
 	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-	xhr.send("noEtudiant="+ID+"&nom="+jnom+"&prenom="+jprenom+"&age="+jage+"&sexe="+jsexe+"&noIut="+jnoIut);
+	xhr.send("codeClients="+codeClients);
 
 
-	//$('#'+idLigne).load("traitement.php?action=modifier&page="+ouSuisJe);
 }
+
+
+
 
 

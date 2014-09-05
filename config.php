@@ -16,7 +16,7 @@ define("DBTYPE", "MySQL");
 define("HOST", "localhost"); 
 define("USER", "root"); 
 define("PASS", "root"); 
-define("BASE", "ProjetWeb");
+define("BASE", "WebS4");
 
 $link = mysqli_connect(HOST,USER,PASS,BASE);
 	if(!$link){
