@@ -17,27 +17,27 @@
 	}
 
 	if (isset($_GET['action']) && $_GET['action'] == 'newLigne') {
-		$rqt = "SELECT codeServices, prestation, cout FROM services";
+		$rqt = "SELECT codeService, prestation, cout FROM service";
 		echo $rqt;
 		$retrqt = mysqli_query($link, $rqt) or die ('Unable to execute query. '. mysqli_error($link));
 		
 
 		while ($info = mysqli_fetch_assoc($retrqt)) {
-			echo "#".$info['codeServices']."@".$info['prestation']."@".$info['cout'];
+			echo "#".$info['codeService']."@".$info['prestation']."@".$info['cout'];
 		}
 	}
 
 	if (isset($_GET['action']) && $_GET['action'] == 'InfoLigne') {
-		// print('<pre>');
-		// print_r($_POST);
-		// print('</pre>');
-		$rqt = "SELECT codeServices, prestation, cout FROM services WHERE codeServices=".$_POST['codeServices'];
+		print('<pre>');
+		print_r($_POST);
+		print('</pre>');
+		$rqt = "SELECT codeService, prestation, cout FROM service WHERE codeService =".$_POST['codeServices'];
 		echo $rqt;
 		$retrqt = mysqli_query($link, $rqt) or die ('Unable to execute query. '. mysqli_error($link));
 		
 
 		while ($info = mysqli_fetch_assoc($retrqt)) {
-			echo "@".$info['codeServices']."@".$info['prestation']."@".$info['cout'];
+			echo "@".$info['codeService']."@".$info['prestation']."@".$info['cout'];
 		}
 	}
 

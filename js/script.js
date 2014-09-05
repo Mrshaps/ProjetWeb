@@ -61,25 +61,59 @@ function checkAll(field) {
 var cmptLigne;
 
 function CalculSomme(){
+  var S = 0;
+  for (var i = 0; i < cmptLigne; i++) {
+    x = parseFloat(document.getElementById('m'+i).innerHTML);
+    S=parseFloat(S)+x;
+  };
+
+  var std = document.getElementById('Somme');
+  std.innerHTML = "";
+  p1 = document.createElement('P');
+  p2 = document.createElement('P');
+  e = document.createTextNode(' \u20AC');
+  p1.innerHTML = S;
+  p2.appendChild(e);
+  std.appendChild(p1);
+  std.appendChild(p2);
+
+
+  var Total = document.getElementById('Total');
+  Total.innerHTML ="";
+  r = document.getElementById('tdRemise').innerHTML;
+  p1 = document.createElement('P');
+  p2 = document.createElement('P');
+  e = document.createTextNode(' \u20AC');
+  p1.innerHTML = S - S * r / 100;
+  p2.appendChild(e);
+  Total.appendChild(p1);
+  Total.appendChild(p2);
+
 
 }
 
-function CalculMontant (Quantite, ligne) {
+function CalculMontant (ligne) {
   
-  var prix = parseFloat(document.getElementById('prixU'+ligne).innerHTML).toFixed(2);
+  Quantite = document.getElementById('qte'+ligne).value;
+
+  var prix = document.getElementById('prixU'+ligne).innerHTML;
   m = document.getElementById('montant'+ligne);
   m.innerHTML = "";
-  p = document.createElement('P');
+  p1 = document.createElement('P');
+  p2 = document.createElement('P');
   prix = document.createTextNode(prix * Quantite);
   e = document.createTextNode(' \u20AC');
-  m.appendChild(prix);
-  m.appendChild(e);
+  m.appendChild(p1)
+  p1.appendChild(prix);
+  p1.setAttribute('id','m'+ligne);
+  p2.appendChild(e);
+  m.appendChild(p2);
 
 
 }
 
 function InfoLigne(service, ligne) {
-  //alert(ligne);
+  //alert(service);
   var xhr = getXhr();
   xhr.onreadystatechange = function(){
     if(xhr.readyState == 4 && xhr.status == 200){
@@ -109,6 +143,7 @@ function InfoLigne(service, ligne) {
 function SupprimerLigne() {
   var table = document.getElementById('tbodyId');
   table.deleteRow();
+  cmptLigne--;
 }
 
 function AjoutLigne() {
@@ -126,7 +161,7 @@ function AjoutLigne() {
       var td2 = row.insertCell(); var ttd2 = document.createElement('SELECT'); td2.appendChild(ttd2);
             ttd2.setAttribute('id','listeServices');
             ttd2.setAttribute('name',cmptLigne);
-            ttd2.setAttribute('onchange','InfoLigne(this.value,this.name)');
+            ttd2.setAttribute('onchange','InfoLigne(this.value,this.name); CalculMontant(this.name); CalculSomme()');
             var value = 0;
               var nom = "Vide";
               var option = document.createElement('option'); option.setAttribute("value",value);
@@ -141,8 +176,8 @@ function AjoutLigne() {
               cmpt++;
             }
       var td3 = row.insertCell(); var ttd3 = document.createTextNode('0 \u20AC'); td3.appendChild(ttd3); td3.setAttribute('style','display: inline-flex;'); td3.setAttribute('id','prix'+cmptLigne);
-      var td4 = row.insertCell(); var ttd4 = document.createElement('INPUT'); td4.appendChild(ttd4); ttd4.setAttribute('name',cmptLigne);
-      ttd4.setAttribute('type','text'); ttd4.setAttribute('placeholder','0'); ttd4.setAttribute('onkeyup','CalculMontant(this.value,this.name)');
+      var td4 = row.insertCell(); var ttd4 = document.createElement('INPUT'); td4.appendChild(ttd4); ttd4.setAttribute('name',cmptLigne); ttd4.setAttribute('id','qte'+cmptLigne); 
+      ttd4.setAttribute('type','text'); ttd4.setAttribute('placeholder','0'); ttd4.setAttribute('onkeyup','CalculMontant(this.name); CalculSomme()');
       var td5 = row.insertCell(); var ttd5 = document.createTextNode('0 \u20AC'); td5.appendChild(ttd5); td5.setAttribute('id','montant'+cmptLigne); td5.setAttribute('style','display: inline-flex;');
       cmptLigne++;
 
@@ -162,7 +197,7 @@ function infoClient()
 	if(xhr.readyState == 4 && xhr.status == 200){
 	  	// ----info client----
       document.getElementById('info').innerHTML = "";
-      //document.getElementById('error').innerHTML = xhr.responseText;
+      // document.getElementById('error').innerHTML = xhr.responseText;
       var i = xhr.responseText.split(",");
 
       var p = document.createElement('P');
@@ -179,7 +214,7 @@ function infoClient()
 
       document.getElementById('tableau').style.visibility="visible";
       document.getElementById('tdCarte').innerHTML="Votre carte est "+i[6]+".";
-      document.getElementById('tdRemise').innerHTML=i[7]+" %";
+      document.getElementById('tdRemise').innerHTML=i[7];
       cmptLigne = 0;
 
 

@@ -17,13 +17,13 @@
 			<tfoot>
 				<tr>
 					<td colspan="3" rowspan="3" id="tdCarte">Votre carte est .</td>
-					<td>Somme</td><td id="Somme"></td>
+					<td>Somme</td><td id="Somme" style="display: inline-flex;"></td>
 				</tr>
 				<tr>
-					<td>Remise</td><td id="tdRemise"></td>
+					<td>Remise</td><td style="display: inline-flex;"> <p id="tdRemise"></p> <p> %</p></td>
 				</tr>
 				<tr>
-					<td>A regler</td><td></td>
+					<td>A regler</td><td id="Total" style="display: inline-flex;"></td>
 				</tr>
 			</tfoot>
 		</table>
