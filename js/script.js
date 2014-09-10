@@ -142,7 +142,7 @@ function InfoLigne(service, ligne) {
 
 function SupprimerLigne() {
   var table = document.getElementById('tbodyId');
-  table.deleteRow();
+  table.deleteRow(cmptLigne-1);
   cmptLigne--;
 }
 
@@ -175,10 +175,24 @@ function AjoutLigne() {
               var title = document.createTextNode(nom); option.appendChild(title); ttd2.appendChild(option);
               cmpt++;
             }
-      var td3 = row.insertCell(); var ttd3 = document.createTextNode('0 \u20AC'); td3.appendChild(ttd3); td3.setAttribute('style','display: inline-flex;'); td3.setAttribute('id','prix'+cmptLigne);
+      pPrix = document.createElement('P');
+      pPrix.setAttribute('id', 'prixU'+cmptLigne);
+      pE = document.createElement('P');
+      var td3 = row.insertCell(); var ttd3_1 = document.createTextNode('0'); var ttd3_2 = document.createTextNode(' \u20AC'); 
+      td3.appendChild(pPrix); td3.appendChild(pE); pPrix.appendChild(ttd3_1); pE.appendChild(ttd3_2); 
+      td3.setAttribute('style','display: inline-flex;'); td3.setAttribute('id','prix'+cmptLigne);
+      
+
       var td4 = row.insertCell(); var ttd4 = document.createElement('INPUT'); td4.appendChild(ttd4); ttd4.setAttribute('name',cmptLigne); ttd4.setAttribute('id','qte'+cmptLigne); 
       ttd4.setAttribute('type','text'); ttd4.setAttribute('placeholder','0'); ttd4.setAttribute('onkeyup','CalculMontant(this.name); CalculSomme()');
-      var td5 = row.insertCell(); var ttd5 = document.createTextNode('0 \u20AC'); td5.appendChild(ttd5); td5.setAttribute('id','montant'+cmptLigne); td5.setAttribute('style','display: inline-flex;');
+      
+      pMontant = document.createElement('P');
+      pMontant.setAttribute('id', 'm'+cmptLigne);
+      pE = document.createElement('P');
+      var td5 = row.insertCell(); var ttd5_1 = document.createTextNode('0'); var ttd5_2 = document.createTextNode(' \u20AC'); 
+      td5.setAttribute('id','montant'+cmptLigne); td5.setAttribute('style','display: inline-flex;');
+      td5.appendChild(pMontant); td5.appendChild(pE); pMontant.appendChild(ttd5_1); pE.appendChild(ttd5_2);
+
       cmptLigne++;
 
     }
