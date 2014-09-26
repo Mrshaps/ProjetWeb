@@ -11,6 +11,7 @@
 	<div id="tableau" style="visibility:hidden">
 		<input type="button" value="Ajouter une ligne" onclick="AjoutLigne()">
 		<input type="button" value="Supprimer une ligne" onclick="SupprimerLigne();CalculSomme()">
+		<input type="button" value="Sauvegarder" onclick="Sauvegarder()">
 		<table id="table">
 			<thead><tr><td>Code prestation</td><td>Designation</td><td>Prix</td><td>Quantite</td><td>Montant</td></tr></thead>
 			<tbody id="tbodyId"></tbody>

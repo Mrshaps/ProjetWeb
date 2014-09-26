@@ -1,0 +1,33 @@
+@font-face { font-family: Harabara; src: url(Harabara.woff); }
+@font-face { font-family: PoetsenOne-Regular; src: url(PoetsenOne-Regular.woff);}
+@font-face { font-family: Sketch_Block; src: url(Sketch_Block.woff); }
+
+
+
+/*-------------------------------------------------*/
+
+
+#header {
+  position: relative;
+  margin-bottom: 125px;
+}
+
+
+#page {
+  position: absolute;
+  right: 15%;
+  width: 70%;
+}
+
+#footer{
+  position: relative;
+}
+
+
+
+
+
+
+
+
+

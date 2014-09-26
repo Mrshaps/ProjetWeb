@@ -12,13 +12,11 @@
   margin-bottom: 125px;
 }
 
-#content{
-  position: relative;
-}
+
 #page {
   position: absolute;
-  right: 10%;
-  width: 80%;
+  right: 15%;
+  width: 70%;
 }
 
 #footer{
